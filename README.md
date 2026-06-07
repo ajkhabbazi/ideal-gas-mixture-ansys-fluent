@@ -51,7 +51,7 @@ This UDF was developed for the ideal gas simulation cases in:
 The paper numerically investigates hydrogen injection into natural gas distribution pipelines via Tee junctions, using both ideal and Soave–Redlich–Kwong (SRK) real gas models. It quantifies mixing homogeneity length across distribution-pressure and intermediate-pressure operating conditions, examining the effects of side pipe diameter, injection direction, and momentum ratio on mixing quality.
 
 ```bibtex
-@article{Khabbazi2024,
+@article{khabbazi2024h2,
   title   = {Mixing hydrogen into natural gas distribution pipeline system through {Tee} junctions},
   author  = {Khabbazi, Arash J. and Zabihi, Mojtaba and Li, Ri and Hill, Matthew and Chou, Vincent and Quinn, John},
   journal = {International Journal of Hydrogen Energy},
