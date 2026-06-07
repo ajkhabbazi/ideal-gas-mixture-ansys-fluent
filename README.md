@@ -79,4 +79,4 @@ The base framework (`RGAS_Functions` interface) originates from proprietary ANSY
 For questions about the UDF or its implementation, please reach out to:
 
 **Arash J. Khabbazi** — School of Mechanical Engineering, Purdue University
-[arashjkh@purdue.edu](mailto:arashjkh@purdue.edu)
+[arashjkh@gmail.com](mailto:arashjkh@gmail.com)
