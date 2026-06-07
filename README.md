@@ -4,6 +4,10 @@
 [![Fluent UDF](https://img.shields.io/badge/Ansys-Fluent%20UDF-orange)](https://www.ansys.com/products/fluids/ansys-fluent)
 [![DOI](https://img.shields.io/badge/DOI-10.1016%2Fj.ijhydene.2023.11.038-blue)](https://doi.org/10.1016/j.ijhydene.2023.11.038)
 
+---
+
+## Overview
+
 A compiled C UDF that plugs into Ansys Fluent's `RGAS_Functions` interface to provide full thermodynamic and transport property evaluation for ideal gas mixtures. Developed and used in CFD simulations of hydrogen injection into natural gas distribution pipelines.
 
 ---
@@ -71,6 +75,8 @@ The base framework (`RGAS_Functions` interface) originates from proprietary ANSY
 ---
 
 ## Contact
+
+For questions about the UDF or its implementation, please reach out to:
 
 **Arash J. Khabbazi** — School of Mechanical Engineering, Purdue University
 [arashjkh@purdue.edu](mailto:arashjkh@purdue.edu)
