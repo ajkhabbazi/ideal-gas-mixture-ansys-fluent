@@ -1,80 +1,73 @@
-# 🔬 Ideal Gas Mixture Property Model for ANSYS Fluent
+# Ideal Gas Mixture UDF for Ansys Fluent
 
-## 📌 Overview
+[![Language](https://img.shields.io/badge/language-C-blue)](https://en.wikipedia.org/wiki/C_(programming_language))
+[![Fluent UDF](https://img.shields.io/badge/Ansys-Fluent%20UDF-orange)](https://www.ansys.com/products/fluids/ansys-fluent)
+[![DOI](https://img.shields.io/badge/DOI-10.1016%2Fj.ijhydene.2023.11.038-green)](https://doi.org/10.1016/j.ijhydene.2023.11.038)
 
-This repository contains a forked and extended version of a proprietary thermodynamic model originally developed by **ANSYS, Inc.** for simulating **ideal gas mixtures** in **ANSYS Fluent** using a **User-Defined Function (UDF)**.
-
-The forked version by **Arash Jalil Khabbazi** expands upon the original structure, demonstrating how to calculate thermophysical properties of multi-species gas mixtures based on polynomial fits for specific heat and critical property data. The sample configuration currently includes **hydrogen (H₂)** and **methane (CH₄)**.
-
----
-
-## 🧠 What This Code Does
-
-This UDF provides Fluent with custom implementations for the following gas properties of mixtures:
-
-- ✅ Density  
-- ✅ Specific heat (Cp)  
-- ✅ Enthalpy and entropy  
-- ✅ Speed of sound  
-- ✅ Viscosity and thermal conductivity  
-- ✅ Temperature and pressure derivatives of enthalpy and density  
-- ✅ Mixture molecular weight and gas constant  
-
-All properties are computed assuming **ideal gas behavior** using user-defined polynomial coefficients and static inputs.
+A compiled C UDF that plugs into Ansys Fluent's `RGAS_Functions` interface to provide full thermodynamic and transport property evaluation for ideal gas mixtures. Developed and used in CFD simulations of hydrogen injection into natural gas distribution pipelines.
 
 ---
 
-## 🔧 How It Works
+## What it provides
 
-- Written in **C**, using Fluent's UDF API (`udf.h`)
-- Compatible with **FLUENT’s compiled UDF libraries**
-- Designed to work in **SI units**
-- Currently supports **2 gases**:  
-  - H₂ (Hydrogen)  
-  - CH₄ (Methane)  
-- Can be **manually extended** to support more species by editing:
-  - `#define n_specs`  
-  - `Mw()`, `Cp_Parameters()`, `Tcrit()`, `Pcrit()`, `Vcrit()`
+The UDF supplies Fluent with custom mixture property routines at every cell and time step:
 
----
+| Property | Function |
+|----------|----------|
+| Density | ideal gas law |
+| Specific heat *C*ₚ | 4th-order polynomial in *T* |
+| Enthalpy, Entropy | integrated from *C*ₚ polynomial |
+| Speed of sound | derived from *C*ₚ and *R*ₘᵢₓ |
+| Viscosity | Stiel–Thodos correlation |
+| Thermal conductivity | Eucken relation |
+| ∂ρ/∂*T*\|ₚ, ∂ρ/∂*p*\|_T, ∂*h*/∂*T*\|ₚ, ∂*h*/∂*p*\|_T | analytical derivatives |
 
-## 📂 Application
-
-This model is ideal for use in:
-- Academic CFD research
-- Educational demos of ideal gas modeling
-- Sensitivity studies comparing Fluent’s built-in models vs. UDFs
-- Simple multi-species non-reacting flows (e.g., H₂/CH₄ mixing, pipeline studies)
-
-It is **not intended** for high-fidelity reacting flow simulations or real-gas effects beyond ideal assumptions.
+All quantities are in SI units. The mixture averages are mass-fraction weighted.
 
 ---
 
-## ⚠️ Limitations
+## Getting started
 
-- ❌ Only 2 species are supported by default (can be extended manually)
-- ❌ Assumes **ideal gas behavior** — no non-ideal EOS support
-- ❌ All inputs (Cp coefficients, critical properties) are hardcoded
-- ❌ Requires recompilation when changing species or parameters
+**Requirements:** Ansys Fluent with compiled UDF support (any recent version).
 
----
+1. Open your Fluent case.
+2. Go to **User-Defined → Functions → Compiled UDFs** and add `ideal_gas_mixture_v2.c`.
+3. Build and load the library.
+4. Under **Materials**, select the loaded UDF as the real-gas equation of state for your mixture.
 
-## 📜 Legal and Copyright Notice
-
-**Original Copyright © 1988–1998 ANSYS, Inc.**  
-**Forked and Extended by Arash Jalil-Khabbazi**  
-All Rights Reserved.
-
-This repository includes a modified version of proprietary source code originally developed by **ANSYS, Inc.** The base code is protected under U.S. copyright law as an **unpublished work** and is furnished under a written license agreement. It is considered **confidential** and may **not be used, copied, or disclosed** except in accordance with the terms of that agreement.
-
-> This fork is intended **solely for academic and demonstrative purposes** and does not distribute or disclose any part of the ANSYS FLUENT binary or internal globals.
+**Species configuration** is set in `MIXTURE_Setup` via the `gas[]` array and the property functions `Mw()`, `Cp_Parameters()`, `Tcrit()`, `Pcrit()`, `Vcrit()`. The default configuration is H₂/CH₄. To add or swap species, update `n_specs` and the corresponding property arrays.
 
 ---
 
-## 📬 Contact
+## Related publication
 
-For questions or additional information, please contact:  
-**📧 arashjkh@gmail.com**
+This UDF was developed for the ideal gas simulation cases in:
+
+> Khabbazi, A.J., Zabihi, M., Li, R., Hill, M., Chou, V., & Quinn, J. (2024).
+> **Mixing hydrogen into natural gas distribution pipeline system through Tee junctions.**
+> *International Journal of Hydrogen Energy*, 49, 1332–1344.
+> https://doi.org/10.1016/j.ijhydene.2023.11.038
+
+```bibtex
+@article{Khabbazi2024,
+  title   = {Mixing hydrogen into natural gas distribution pipeline system through {Tee} junctions},
+  author  = {Khabbazi, Arash J. and Zabihi, Mojtaba and Li, Ri and Hill, Matthew and Chou, Vincent and Quinn, John},
+  journal = {International Journal of Hydrogen Energy},
+  volume  = {49},
+  pages   = {1332--1344},
+  year    = {2024},
+  doi     = {10.1016/j.ijhydene.2023.11.038}
+}
+```
 
 ---
 
+## Legal notice
+
+The base framework (`RGAS_Functions` interface) originates from proprietary ANSYS, Inc. source code (© 1988–1998). This fork extends it for academic and demonstrative use only, without distributing or linking against any Fluent binary. Do not use, copy, or disclose beyond the terms of the original license agreement.
+
+---
+
+## Contact
+
+Arash J. Khabbazi — arashjkh@gmail.com
